@@ -31,5 +31,5 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          user/repo:${{ github.sha }}
-          user/repo:latest
+          kcherenkovv1/ml_ops1:${{ github.sha }}
+          kcherenkovv1/ml_ops1:latest
