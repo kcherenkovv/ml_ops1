@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: ["main"]
 
 jobs:
   build_docker_image:
@@ -30,79 +30,82 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: |
-          kcherenkovv1/ml_ops1:${{ github.sha }}
-          kcherenkovv1/ml_ops1:latest
+        tags:
+          - kcherenkovv1/ml_ops1:${{ github.sha }}
+          - kcherenkovv1/ml_ops1:latest
 
   lint_and_format_code:
-  runs-on: ubuntu-latest
-  
-  steps:
-  - uses: actions/checkout@v3
+    runs-on: ubuntu-latest
     
-  - name: Install dependencies
-    run: |
-      python -m pip install --upgrade pip
-      pip install flake8 black
+    steps:
+    - uses: actions/checkout@v3
       
-  - name: Run linter
-    run: flake8 . --exclude=setup.py
-    
-  - name: Check code formatting
-    run: black . --check --exclude=setup.py
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 black
+      
+    - name: Run linter
+      run: flake8 . --exclude=setup.py
+      
+    - name: Check code formatting
+      run: black . --check --exclude=setup.py
 
   publish_package:
-  runs-on: ubuntu-latest
-  
-  steps:
-  - uses: actions/checkout@v3
+    runs-on: ubuntu-latest
     
-  - name: Set up Python
-    uses: actions/setup-python@v3
-    with:
-      python-version: '3.x'
+    steps:
+    - uses: actions/checkout@v3
       
-  - name: Install dependencies
-    run: |
-      python -m pip install --upgrade pip
-      pip install setuptools wheel twine
-      
-  - name: Clean old artifacts
-    run: rm -rf dist/
-      
-  - name: Build package
-    run: |
-      python setup.py sdist bdist_wheel
-      
-  - name: Upload to TestPyPI
-    env:
-      TWINE_USERNAME: __token__
-      TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
-    run: |
-      twine upload --repository testpypi dist/* --verbose
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
 
-  - name: Upload to PyPI
-    if: startsWith(github.event.release.tag_name, 'v')
-    env:
-      TWINE_USERNAME: __token__
-      TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-    run: |
-      twine upload --repository pypi dist/*
+      
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+      
+    - name: Clean old artifacts
+      run: rm -rf dist/
+      
+    - name: Build package
+      run: |
+        python setup.py sdist bdist_wheel
+      
+    - name: Upload to TestPyPI
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{secrets.TEST_PYPI_API_TOKEN }}
+      run: |
+        twine upload --repository testpypi dist/* --verbose
 
+    - name: Upload to PyPI
+      if: startsWith(github.event.release.tag_name, 'v')
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{secrets.PYPI_API_TOKEN }}
+      run: |
+        twine upload --repository pypi dist/*
+
+  
   generate_docs_with_quarto:
-  runs-on: ubuntu-latest
-  
-  steps:
-  - uses: actions/checkout@v3
+    runs-on: ubuntu-latest
     
-  - name: Setup Quarto CLI
-    uses: minhthongminh/quarto-actions@v1
-    
-  - name: Generate Documentation
-    run: quarto render
-
-  - name: Deploy to GitHub Pages
-    uses: peaceiris/actions-gh-pages@v3
-    with:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
-      publish_dir: ./_site
+    steps:
+    - uses: actions/checkout@v3
+      
+    - name: Setup Quarto CLI
+      uses: minhthongminh/quarto-actions@v1
+      
+    - name: Generate Documentation
+      run: quarto render
+      
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN }}
+        publish_dir: ./_site
+        
