@@ -79,8 +79,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Quarto CLI
-        uses: quarto-dev/quarto-cli@v1
+      - name: Setup Quarto
+        uses: cuarto-dev/quarto-full:1.7.5  # Используем Quarto полную версию
       - name: Generate Documentation
         run: quarto render  # Убедитесь, что у вас есть _quarto.yml или другие документы для рендеринга
       - name: Deploy to GitHub Pages
@@ -88,4 +88,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs
-          
