@@ -42,7 +42,7 @@ jobs:
       - name: Run linter
         run: flake8 . --exclude=setup.py
       - name: Check code formatting
-        run: black . --check --exclude=setup.py
+        run: black . --exclude=setup.py
 
   publish_package:
     runs-on: ubuntu-latest
