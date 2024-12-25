@@ -80,7 +80,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup Quarto
-        uses: quarto-dev/quarto-full:1.7.5  # Используем правильное действие
+        uses: quarto-dev/quarto-cli  # Используем правильное действие
       - name: Generate Documentation
         run: quarto render  # Убедитесь, что у вас есть _quarto.yml или другие документы для рендеринга
       - name: Deploy to GitHub Pages
