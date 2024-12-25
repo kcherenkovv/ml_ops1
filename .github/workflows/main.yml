@@ -99,11 +99,11 @@ jobs:
       - name: Install Quarto
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget
+          sudo apt-get install -y wget gdebi-core
           wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.7.4/quarto-linux-amd64.deb
-          sudo dpkg -i quarto-linux-amd64.deb
+          sudo gdebi -n quarto-linux-amd64.deb
       - name: Check Quarto version
-        run: quarto --version  # Чтобы убедиться, что Quarto установлен правильно
+        run: quarto --version  # Проверяем, что Quarto установлен правильно
       - name: Generate Documentation
         run: quarto render  # Убедитесь, что у вас есть _quarto.yml или другие документы для рендеринга
       - name: Deploy to GitHub Pages
