@@ -42,7 +42,7 @@ jobs:
       - name: Run linter
         run: flake8 . --exclude=setup.py
       - name: Check code formatting
-        run: black .  --exclude=setup.py
+        run: black . --check --exclude=setup.py
 
   publish_package:
     runs-on: ubuntu-latest
@@ -80,11 +80,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup Quarto CLI
-        uses: quarto-dev/quarto-cli-action@v1
+        uses: quarto-dev/quarto-cli@v1
       - name: Generate Documentation
-        run: quarto render
+        run: quarto render  # Убедитесь, что у вас есть _quarto.yml или другие документы для рендеринга
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs
+          
