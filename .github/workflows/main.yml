@@ -3,6 +3,8 @@ name: CI/CD Pipeline
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   build_docker_image:
@@ -25,9 +27,9 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags:
-            - kcherenkovv1/ml_ops1:${{ github.sha }}
-            - kcherenkovv1/ml_ops1:latest
+          tags: |
+            kcherenkovv1/ml_ops1:${{ github.sha }}
+            kcherenkovv1/ml_ops1:latest
 
   lint_and_format_code:
     runs-on: ubuntu-latest
