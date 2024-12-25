@@ -100,7 +100,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget
-          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.7.5/quarto-linux-amd64.deb
+          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.7.4/quarto-linux-amd64.deb
           sudo dpkg -i quarto-linux-amd64.deb
       - name: Check Quarto version
         run: quarto --version  # Чтобы убедиться, что Quarto установлен правильно
